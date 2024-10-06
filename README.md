@@ -24,7 +24,7 @@ Implementation using C or pyhton code
 Testing algorithm with different key values. 
 
 ## PROGRAM:
-
+```
 #include <stdio.h>
 #include <string.h>
 
@@ -71,7 +71,7 @@ int main()
     return 0;
 }
 
-
+```
 
 ## OUTPUT:
 ![image](https://github.com/surrey-78/Cryptography---19CS412-classical-techqniques/assets/119559366/27d805f8-0e5e-43b0-93fc-1315fe988c61)
@@ -269,7 +269,7 @@ Implementation using C or pyhton code
 Testing algorithm with different key values. 
 
 ## PROGRAM:
-
+```
 #include <stdio.h>
 
 int main() 
@@ -297,7 +297,7 @@ int main()
 
     return 0;
 }
-
+```
 ## OUTPUT:
 ![image](https://github.com/surrey-78/Cryptography---19CS412-classical-techqniques/assets/119559366/b9975113-a605-403a-ade5-7b444ec816f8)
 
@@ -328,7 +328,7 @@ Implementation using C or pyhton code
 Testing algorithm with different key values. 
 
 ## PROGRAM:
-
+```
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -393,7 +393,7 @@ int main()
     return 0;
 }
 
-
+```
 ## OUTPUT:
 ![image](https://github.com/surrey-78/Cryptography---19CS412-classical-techqniques/assets/119559366/429aab90-dd87-4912-bccd-d03328030bfd)
 
@@ -425,7 +425,7 @@ Implementation using C or pyhton code
 Testing algorithm with different key values. 
 
 ## PROGRAM:
-
+```
 
 #include<stdio.h>
 #include<conio.h>
@@ -478,7 +478,7 @@ int main()
 
     return 0;
 }
-
+```
 
 ## OUTPUT:
 ![image](https://github.com/surrey-78/Cryptography---19CS412-classical-techqniques/assets/119559366/a5f4e5a4-6c59-4a3c-a9b8-f29d790e19fb)
