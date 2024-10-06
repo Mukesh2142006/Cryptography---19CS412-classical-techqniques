@@ -107,7 +107,7 @@ Testing algorithm with different key values.
 ## PROGRAM:
 
 
-
+```
 #include<stdio.h>
 #include<conio.h>
 #include<string.h>
@@ -234,7 +234,7 @@ int main()
      printf("\nDecrypted text:%s",str);
     return 0;
 }
-
+```
 
 
 ## OUTPUT:
