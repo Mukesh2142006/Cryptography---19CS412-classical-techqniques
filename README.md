@@ -122,7 +122,8 @@ int main() {
 }
 ```
 ## OUTPUT:
-![Screenshot 2024-09-11 134234](https://github.com/user-attachments/assets/cd4c5a34-996f-40f8-a97c-14e608f8a297)
+![Screenshot 2024-10-19 203925](https://github.com/user-attachments/assets/a23fd918-14eb-4380-9276-8fe5c0e6ab44)
+
 
 
 ## RESULT:
