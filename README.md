@@ -1,16 +1,16 @@
 # DATE:
-# EXP NO: 3- Hill Cipher
-Hill Cipher using with different key values
+# EXP NO 5- Rail Fence Cipher
+Rail Fence Cipher using with different key values
 
 # AIM:
 
-To develop a simple C program to implement Hill Cipher.
+To develop a simple C program to implement Rail Fence Cipher.
 
 ## DESIGN STEPS:
 
 ### Step 1:
 
-Design of Hill Cipher algorithnm 
+Design of Rail Fence Cipher algorithnm 
 
 ### Step 2:
 
@@ -20,111 +20,124 @@ Implementation using C or pyhton code
 
 Testing algorithm with different key values. 
 ALGORITHM DESCRIPTION:
-The Hill cipher is a substitution cipher invented by Lester S. Hill in 1929. Each letter is represented by a number modulo 26. To encrypt a message, each block of n letters is multiplied by an invertible n × n matrix, again modulus 26.
-To decrypt the message, each block is multiplied by the inverse of the matrix used for encryption. The matrix used for encryption is the cipher key, and it should be chosen randomly from the set of invertible n × n matrices (modulo 26).
-The cipher can, be adapted to an alphabet with any number of letters. All arithmetic just needs to be done modulo the number of letters instead of modulo 26.
-
+In the rail fence cipher, the plaintext is written downwards and diagonally on successive "rails" of an imaginary fence, then moving up when we reach the bottom rail. When we reach the top rail, the message is written downwards again until the whole plaintext is written out. The message is then read off in rows.
 
 ## PROGRAM:
-```c
+
+PROGRAM:
+```C
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
-int keymat[3][3] = { { 1, 2, 1 }, { 2, 3, 2 }, { 2, 2, 1 } };
-int invkeymat[3][3] = { { -1, 0, 1 }, { 2, -1, 0 }, { -2, 2, -1 } };
-char key[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+void encryptRailFence(char *text, int key, char *cipherText) {
+    int len = strlen(text);
+    int row, col, direction;
+    char rail[key][len];
 
-// Function to encode a triplet of characters
-void encode(char a, char b, char c, char ret[]) {
-    int x, y, z;
-    int posa = (int)a - 65;
-    int posb = (int)b - 65;
-    int posc = (int)c - 65;
+    // Initializing the rail matrix with null characters
+    for (row = 0; row < key; row++)
+        for (col = 0; col < len; col++)
+            rail[row][col] = '\n';
 
-    x = posa * keymat[0][0] + posb * keymat[1][0] + posc * keymat[2][0];
-    y = posa * keymat[0][1] + posb * keymat[1][1] + posc * keymat[2][1];
-    z = posa * keymat[0][2] + posb * keymat[1][2] + posc * keymat[2][2];
-
-    ret[0] = key[x % 26];
-    ret[1] = key[y % 26];
-    ret[2] = key[z % 26];
-    ret[3] = '\0';
-}
-
-// Function to decode a triplet of characters
-void decode(char a, char b, char c, char ret[]) {
-    int x, y, z;
-    int posa = (int)a - 65;
-    int posb = (int)b - 65;
-    int posc = (int)c - 65;
-
-    x = posa * invkeymat[0][0] + posb * invkeymat[1][0] + posc * invkeymat[2][0];
-    y = posa * invkeymat[0][1] + posb * invkeymat[1][1] + posc * invkeymat[2][1];
-    z = posa * invkeymat[0][2] + posb * invkeymat[1][2] + posc * invkeymat[2][2];
-
-    ret[0] = key[(x % 26 < 0) ? (26 + x % 26) : (x % 26)];
-    ret[1] = key[(y % 26 < 0) ? (26 + y % 26) : (y % 26)];
-    ret[2] = key[(z % 26 < 0) ? (26 + z % 26) : (z % 26)];
-    ret[3] = '\0';
-}
-
-int main() {
-    char msg[1000];
-    char enc[1000] = "";
-    char dec[1000] = "";
-    int n;
-
-    strcpy(msg, "ABISHEK");
-    printf("Input message : %s\n", msg);
-
-    // Convert the input message to uppercase
-    for (int i = 0; i < strlen(msg); i++) {
-        msg[i] = toupper(msg[i]);
+    // Placing characters in the rail matrix in a zig-zag manner
+    row = 0;
+    direction = 1; // 1 for down, -1 for up
+    for (col = 0; col < len; col++) {
+        rail[row][col] = text[col];
+        if (row == 0)
+            direction = 1;
+        else if (row == key - 1)
+            direction = -1;
+        row += direction;
     }
 
-    // Remove spaces
-    n = strlen(msg) % 3;
+    // Reading the matrix row-wise to get the cipher text
+    int index = 0;
+    for (row = 0; row < key; row++) {
+        for (col = 0; col < len; col++) {
+            if (rail[row][col] != '\n') {
+                cipherText[index++] = rail[row][col];
+            }
+        }
+    }
+    cipherText[index] = '\0';
+}
 
-    // Append padding text 'X' if necessary
-    if (n != 0) {
-        for (int i = 1; i <= (3 - n); i++) {
-            strcat(msg, "X");
+void decryptRailFence(char *cipherText, int key, char *plainText) {
+    int len = strlen(cipherText);
+    int row, col, direction;
+    char rail[key][len];
+
+    // Initializing the rail matrix with null characters
+    for (row = 0; row < key; row++)
+        for (col = 0; col < len; col++)
+            rail[row][col] = '\n';
+
+    // Marking the places in the rail matrix where the cipher text characters will go
+    row = 0;
+    direction = 1; // 1 for down, -1 for up
+    for (col = 0; col < len; col++) {
+        rail[row][col] = '*';
+        if (row == 0)
+            direction = 1;
+        else if (row == key - 1)
+            direction = -1;
+        row += direction;
+    }
+
+    // Filling the rail matrix with the cipher text characters
+    int index = 0;
+    for (row = 0; row < key; row++) {
+        for (col = 0; col < len; col++) {
+            if (rail[row][col] == '*' && index < len) {
+                rail[row][col] = cipherText[index++];
+            }
         }
     }
 
-    printf("Padded message : %s\n", msg);
-
-    // Encode the message
-    for (int i = 0; i < strlen(msg); i += 3) {
-        char a = msg[i];
-        char b = msg[i + 1];
-        char c = msg[i + 2];
-        char encoded[4];
-        encode(a, b, c, encoded);
-        strcat(enc, encoded);
+    // Reading the matrix in a zig-zag manner to get the plain text
+    row = 0;
+    direction = 1; // 1 for down, -1 for up
+    for (col = 0; col < len; col++) {
+        plainText[col] = rail[row][col];
+        if (row == 0)
+            direction = 1;
+        else if (row == key - 1)
+            direction = -1;
+        row += direction;
     }
+    plainText[len] = '\0';
+}
 
-    printf("Encoded message : %s\n", enc);
+int main() {
+    char text[100], cipherText[100], plainText[100];
+    int key;
 
-    // Decode the message
-    for (int i = 0; i < strlen(enc); i += 3) {
-        char a = enc[i];
-        char b = enc[i + 1];
-        char c = enc[i + 2];
-        char decoded[4];
-        decode(a, b, c, decoded);
-        strcat(dec, decoded);
-    }
+    // Input the plain text
+    printf("Enter the plain text: ");
+    gets(text);
 
-    printf("Decoded message : %s\n", dec);
+    // Input the key (number of rails)
+    printf("Enter the key (number of rails): ");
+    scanf("%d", &key);
+
+    // Encrypt the plain text
+    encryptRailFence(text, key, cipherText);
+    printf("Encrypted Text: %s\n", cipherText);
+
+    // Decrypt the cipher text
+    decryptRailFence(cipherText, key, plainText);
+    printf("Decrypted Text: %s\n", plainText);
+
     return 0;
 }
+
+
 ```
 ## OUTPUT:
-![Screenshot 2024-10-19 203925](https://github.com/user-attachments/assets/a23fd918-14eb-4380-9276-8fe5c0e6ab44)
 
+![Screenshot 2024-10-19 205037](https://github.com/user-attachments/assets/b8812a15-06b5-4ebd-9645-e0645091b4ee)
 
 
 ## RESULT:
-The program Hill Cipher is executed successfully
+The program Rail Fence Cipher is executed successfully
